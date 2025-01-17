@@ -1,0 +1,149 @@
+/* common */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+p,
+span,
+li,
+b,
+a,
+strong {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+
+.link:hover {
+    color: black;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.content {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.card-header {
+    color: white;
+    border: 1px solid gray;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    background-color: cadetblue;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-links>a {
+    margin-right: 15px;
+}
+
+.card-header h4::before {
+    content: "> ";
+}
+
+.card-content {
+    padding: 10px;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-item {
+    margin: 0 15px;
+}
+
+.card-img {
+    width: 30%;
+    height: 200px;
+    object-fit: cover;
+    opacity: 0.7;
+    border-radius: 5px;
+    margin-left: 0;
+    outline: 1px solid silver;
+    outline-offset: 2px;
+}
+
+.card-img:hover {
+    opacity: 1;
+    outline-color: gray;
+}
+
+.card-description {
+    width: 40%;
+}
+
+.card-aside {
+    width: 30%;
+    margin-right: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: powderblue;
+    text-decoration: none;
+    color: black
+}
+
+.btn:hover {
+    background-color: cadetblue;
+}
+
+/* navigation */
+header {
+    height: 70px;
+    background-color: powderblue;
+    margin-bottom: 15px;
+}
+
+.title {
+    float: left;
+    line-height: 70px;
+}
+
+.nav {
+    height: inherit;
+    float: right;
+}
+
+.nav-list {
+    display: flex;
+    height: 100%;
+    justify-content: right;
+    align-items: center;
+    list-style-type: none;
+}
+
+.nav-list-item {
+    display: block;
+    padding: 0 15px;
+    height: 100%;
+    line-height: 70px;
+}
+
+.nav-list-item:hover {
+    background-color: cadetblue;
+    cursor: pointer;
+}
