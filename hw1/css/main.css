@@ -175,3 +175,30 @@ header {
     background-color: cadetblue;
     cursor: pointer;
 }
+
+/* footer */
+footer {
+    height: 70px;
+    background-color: powderblue;
+}
+
+.contacts {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.contacts>li {
+    display: block;
+    line-height: 70px;
+}
+
+.contacts>li>a {
+    color: black;
+    font-size: 0.9em;
+}
+
+.contacts>li:last-child a {
+    text-decoration: underline;
+}
