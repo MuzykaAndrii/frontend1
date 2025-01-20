@@ -45,8 +45,17 @@ strong {
     margin: 0 auto;
 }
 
+/* main */
 .card {
     margin-bottom: 15px;
+}
+
+.card:nth-of-type(2)>.card-header {
+    background-color: powderblue;
+}
+
+h1 {
+    font-size: 1.5em;
 }
 
 .card-header {
@@ -120,6 +129,7 @@ strong {
     background-color: cadetblue;
 }
 
+/* tags */
 .tags {
     display: flex;
     list-style-type: none;
