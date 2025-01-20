@@ -140,8 +140,13 @@ h1 {
     flex-wrap: wrap;
 }
 
-.tags>li {
-    display: block;
+.tags li {
+    position: relative;
+}
+
+.tag-name {
+    display: inline-block;
+    position: relative;
     padding: 10px;
     font-size: 0.8em;
     background-color: blanchedalmond;
@@ -149,8 +154,24 @@ h1 {
     margin: 5px;
 }
 
-.tags>li:hover {
+.tag-name:hover {
     background-color: burlywood;
+}
+
+.tags>li:hover .tag-info {
+    display: block;
+}
+
+.tag-info {
+    display: none;
+    position: absolute;
+    top: -40px;
+    background-color: aliceblue;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+    z-index: 99;
+    font-size: 0.8em;
 }
 
 /* navigation */
