@@ -29,6 +29,11 @@ strong {
     font-size: 0.8em;
 }
 
+.link-inactive {
+    cursor: none;
+    color: gray;
+}
+
 .link:hover {
     color: black;
     cursor: pointer;
@@ -38,6 +43,10 @@ strong {
 .content {
     max-width: 1280px;
     margin: 0 auto;
+}
+
+.card {
+    margin-bottom: 15px;
 }
 
 .card-header {
@@ -109,6 +118,25 @@ strong {
 
 .btn:hover {
     background-color: cadetblue;
+}
+
+.tags {
+    display: flex;
+    list-style-type: none;
+    flex-wrap: wrap;
+}
+
+.tags>li {
+    display: block;
+    padding: 10px;
+    font-size: 0.8em;
+    background-color: blanchedalmond;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.tags>li:hover {
+    background-color: burlywood;
 }
 
 /* navigation */
