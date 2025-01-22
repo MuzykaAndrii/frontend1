@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        function createStudent(name, age, grades) {
+            return {
+                name: name,
+                age: age,
+                grades: grades,
+            }
+        }
+
+        function printData(student) {
+            console.log(`Student name: ${student.name}`);
+            console.log(`Student age: ${student.age}`);
+            console.log(`Student grades: ${student.grades}`);
+        }
+
+        function calculateAverageGrades(student) {
+            let sum = 0;
+
+            for (let i = 0; i < student.grades.length; i++) {
+                sum += student.grades[i]
+            }
+
+            return sum / student.grades.length
+        }
+
+        function main() {
+            student = createStudent("Andrii", 25, [10, 8, 9, 11]);
+            printData(student);
+            avg = calculateAverageGrades(student);
+            console.log(`Average grades: ${avg}`);
+        }
+
+        main()
+    </script>
+</body>
+
+</html>
