@@ -1,14 +1,22 @@
 "use strict";
 
+let focusedField = null;
+
 window.onload = function () {
-    let number1 = document.getElementById("firstNum");
-    let number2 = document.getElementById("secondNum");
-    let operation = document.getElementById("operation");
-    let calcBtn = document.getElementById("calcBtn");
+    const number1 = document.getElementById("firstNum");
+    const number2 = document.getElementById("secondNum");
+    const operation = document.getElementById("operation");
+    const calcBtn = document.getElementById("calcBtn");
+    const fields = document.querySelectorAll(".field");
+    const calculatorButtons = document.querySelectorAll(".calc-btn");
+
+    listenFields(fields);
+    listenCalculatorButtons(calculatorButtons);
+
 
     calcBtn.addEventListener("click", function (e) {
-        let num1 = Number.parseFloat(number1.value);
-        let num2 = Number.parseFloat(number2.value);
+        const num1 = Number.parseFloat(number1.value);
+        const num2 = Number.parseFloat(number2.value);
 
         try {
             validateNumbers(num1, num2);
@@ -27,7 +35,29 @@ window.onload = function () {
     });
 };
 
+// keyboard logic
+function listenFields(fields) {
+    fields.forEach((field) => {
+        field.addEventListener("focus", function () {
+            focusedField = field;
+        });
+    });
+}
 
+function listenCalculatorButtons(btns) {
+    btns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            if (!focusedField) {
+                return;
+            }
+
+            focusedField.value += btn.innerText;
+        });
+    });
+}
+
+
+// calc logic
 function validateNumbers(...numbers) {
     numbers.forEach(function (number) {
         if (number === undefined || number === null || isNaN(number)) {

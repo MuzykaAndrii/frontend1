@@ -50,13 +50,15 @@
     gap: 8px;
 }
 
-.calc-btn {
+.calc-btn,
+.result-btn {
     text-align: center;
     border: 1px solid silver;
     font-size: 2em;
 }
 
-.calc-btn:hover {
+.calc-btn:hover,
+.result-btn:hover {
     cursor: pointer;
     background-color: silver;
 }
