@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+import HeaderComponent from './components/Header.jsx';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<h1>Hello React!</h1>);
+root.render(<HeaderComponent />);
