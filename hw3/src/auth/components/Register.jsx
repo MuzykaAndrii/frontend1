@@ -3,13 +3,13 @@ import { useRef } from 'react'
 import {Validator, ValidationError} from '../validator'
 
 
-export default function RegisterFormComponent() {
+export default function RegisterFormComponent({ onRegister }) {
     let username = useRef(null);
     let email = useRef(null);
     let password1 = useRef(null);
     let password2 = useRef(null);
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         
         try {
@@ -23,6 +23,8 @@ export default function RegisterFormComponent() {
                 return;
             }
         }
+
+        await onRegister(username.current.value, email.current.value, password1.current.value);
     }
 
     return <>
