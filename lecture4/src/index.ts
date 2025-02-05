@@ -38,11 +38,11 @@ class Developer implements IDeveloper {
         return `Hello, my name is ${this.name}, i can develop using ${this.programmingLanguage}`;
     }
 
-    processData(data: IData) {
+    processData<T extends IData>(data: T): string {
         return `Here is processed data: ${data.name}`
     }
 }
 
 let pythonDev = new Developer("Andrii", "Python");
-console.log(pythonDev.processData(BigData));
-console.log(pythonDev.processData(MLData));
+console.log(pythonDev.processData<BigData>(new BigData()));
+console.log(pythonDev.processData<MLData>(new MLData()));
