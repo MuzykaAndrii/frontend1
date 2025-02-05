@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function HeaderComponent({isAuthenticated}) {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -33,10 +35,10 @@ export default function HeaderComponent({isAuthenticated}) {
                         ) : (
                             <>
                                 <li className="nav-item">
-                                    <a className="nav-link" id="login-link" href="#">Login</a>
+                                    <Link className="nav-link" to="/login">Login</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" id="register-link" href="#">Register</a>
+                                    <Link className="nav-link" to="/register">Register</Link>
                                 </li>
                             </>
                         )}
