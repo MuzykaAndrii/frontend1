@@ -1,17 +1,28 @@
-function LoginFormComponent() {
-    return     <div className="container">
-    <form className="w-25 mx-auto mt-5" id="login-form">
-        <div className="mb-3">
-            <label for="login-username" className="form-label">Username</label>
-            <input className="form-control" id="login-username" required/>
-        </div>
-        <div className="mb-3">
-            <label for="login-password" className="form-label">Password</label>
-            <input type="password" className="form-control" id="login-password" required/>
-        </div>
-        <button type="button" id="login-btn" className="btn btn-primary">Submit</button>
-    </form>
-</div>
-}
+import { useRef } from 'react'
 
-export default LoginFormComponent;
+
+export default function LoginFormComponent() {
+    let login = useRef(null);
+    let password = useRef(null);
+
+    const handleLogin = () => {
+        console.log(login.current.value);
+        console.log(password.current.value);
+    }
+
+    return <>
+    <div className="container">
+        <form className="w-25 mx-auto mt-5" id="login-form">
+            <div className="mb-3">
+                <label htmlFor="login-username" className="form-label">Username</label>
+                <input ref={login} className="form-control" id="login-username" required/>
+            </div>
+            <div className="mb-3">
+                <label htmlFor="login-password" className="form-label">Password</label>
+                <input ref={password} type="password" className="form-control" id="login-password" required/>
+            </div>
+            <button onClick={handleLogin} type="button" id="login-btn" className="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</>
+};
