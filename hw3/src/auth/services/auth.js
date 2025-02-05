@@ -18,6 +18,10 @@ class Auth {
         )
     };
 
+    getCurrentUser() {
+        return this._authStorage.getCurrentUser();
+    }
+
     async login_user(username, password) {
         let response = await this._request(this._endpoints.loginEndpoint, {
             username: username,

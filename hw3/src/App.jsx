@@ -12,13 +12,13 @@ import endpoints from "./auth/services/endpoints"
 
 export default function AppComponent() {
     const navigate = useNavigate();
-    let [currentUser, setCurrentUser] = useState(AuthStorage.getCurrentUser());
+    let [currentUser, setCurrentUser] = useState(Auth.getCurrentUser());
     const auth = new Auth(AuthStorage, endpoints);
 
     const handleLogin = async (username, password) => {
         try {
             await auth.login_user(username, password);
-            setCurrentUser(AuthStorage.getCurrentUser());
+            setCurrentUser(Auth.getCurrentUser());
         } catch (error) {
             alert(error);
         }
