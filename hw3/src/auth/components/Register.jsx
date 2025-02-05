@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import {Validator, ValidationError} from './validator'
+import {Validator, ValidationError} from '../validator'
 
 
 export default function RegisterFormComponent() {
