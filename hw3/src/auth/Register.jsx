@@ -22,3 +22,5 @@ function RegisterFormComponent() {
 </div>
 
 }
+
+export default RegisterFormComponent;
