@@ -1,15 +1,14 @@
 import { useRef } from 'react'
 
 
-export default function LoginFormComponent() {
+export default function LoginFormComponent({ onLogin }) {
     let login = useRef(null);
     let password = useRef(null);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        console.log(login.current.value);
-        console.log(password.current.value);
+        await onLogin(login.current.value, password.current.value);
     }
 
     return <>

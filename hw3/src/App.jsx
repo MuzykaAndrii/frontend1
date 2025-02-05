@@ -11,15 +11,24 @@ import endpoints from "./auth/services/endpoints"
 
 
 export default function AppComponent() {
-    let [isAuthenticated, setAuth] = useState(false);
-    const auth = Auth(AuthStorage, endpoints);
+    let [currentUser, setCurrentUser] = useState(AuthStorage.getCurrentUser());
+    const auth = new Auth(AuthStorage, endpoints);
+
+    const handleLogin = async (username, password) => {
+        try {
+            await auth.login_user(username, password);
+            setCurrentUser(AuthStorage.getCurrentUser());
+        } catch (error) {
+            alert(error);
+        }
+    }
 
     return (
         <Router>
-            <HeaderComponent isAuthenticated={isAuthenticated} />
+            <HeaderComponent currentUser={currentUser} />
             <div className='container'>
                 <Routes>
-                    <Route path="/login" element={<LoginComponent />} />
+                    <Route path="/login" element={<LoginComponent onLogin={handleLogin} />} />
                     <Route path="/register" element={<RegisterComponent />} />
                 </Routes>
             </div>

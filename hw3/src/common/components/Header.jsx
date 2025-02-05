@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function HeaderComponent({isAuthenticated}) {
+export default function HeaderComponent({currentUser}) {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
@@ -23,10 +23,10 @@ export default function HeaderComponent({isAuthenticated}) {
                         </li>
                     </ul>
                     <ul className="navbar-nav">
-                        {isAuthenticated ? (
+                        {currentUser ? (
                             <>
                                 <li className="nav-link" id="currentUser">
-                                    Logged in as user with id: <span id="currentUserId"></span>
+                                    Logged in as user with id: <span id="currentUserId">{currentUser.user_id}</span>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" id="logout-link" href="#">Logout</a>
