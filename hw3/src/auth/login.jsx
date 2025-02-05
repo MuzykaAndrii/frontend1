@@ -5,14 +5,16 @@ export default function LoginFormComponent() {
     let login = useRef(null);
     let password = useRef(null);
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
+
         console.log(login.current.value);
         console.log(password.current.value);
     }
 
     return <>
     <div className="container">
-        <form className="w-25 mx-auto mt-5" id="login-form">
+        <form onSubmit={handleLogin} className="w-25 mx-auto mt-5" id="login-form">
             <div className="mb-3">
                 <label htmlFor="login-username" className="form-label">Username</label>
                 <input ref={login} className="form-control" id="login-username" required/>
@@ -21,7 +23,7 @@ export default function LoginFormComponent() {
                 <label htmlFor="login-password" className="form-label">Password</label>
                 <input ref={password} type="password" className="form-control" id="login-password" required/>
             </div>
-            <button onClick={handleLogin} type="button" id="login-btn" className="btn btn-primary">Submit</button>
+            <button type="submit" id="login-btn" className="btn btn-primary">Log in</button>
         </form>
     </div>
 </>

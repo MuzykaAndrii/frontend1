@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 
+import {Validator, ValidationError} from './validator'
+
 
 export default function RegisterFormComponent() {
     let username = useRef(null);
@@ -7,16 +9,25 @@ export default function RegisterFormComponent() {
     let password1 = useRef(null);
     let password2 = useRef(null);
 
-    const handleRegister = () => {
-        console.log(username.current.value);
-        console.log(email.current.value);
-        console.log(password1.current.value);
-        console.log(password2.current.value);
+    const handleRegister = (e) => {
+        e.preventDefault();
+        
+        try {
+            Validator.validateUsername(username.current.value);
+            Validator.validateEmail(email.current.value);
+            Validator.validatePasswordConfirmation(password1.current.value, password2.current.value);
+            Validator.validatePassword(password1.current.value);
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                alert(`Error: ${err.message}`);
+                return;
+            }
+        }
     }
 
     return <>
     <div className="container">
-        <form className="w-25 mx-auto mt-5" id="register-form">
+        <form onSubmit={handleRegister} className="w-25 mx-auto mt-5" id="register-form">
             <div className="mb-3">
                 <label htmlFor="register-username" className="form-label">Username</label>
                 <input ref={username} type="text" className="form-control" id="register-username" required/>
@@ -33,7 +44,7 @@ export default function RegisterFormComponent() {
                 <label htmlFor="register-password2" className="form-label">Repeat password</label>
                 <input ref={password2} type="password" className="form-control" id="register-password2" required/>
             </div>
-            <button onClick={handleRegister} type="button" id="register-btn" className="btn btn-primary">Register</button>
+            <button type="submit" id="register-btn" className="btn btn-primary">Register</button>
         </form>
     </div>
 </>
