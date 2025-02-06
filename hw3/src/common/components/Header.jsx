@@ -30,8 +30,11 @@ export default function HeaderComponent() {
                     <ul className="navbar-nav">
                         {auth.currentUser ? (
                             <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/chats">Chats</Link>
+                                </li>
                                 <li className="nav-link" id="currentUser">
-                                    Logged in as user with id: <span id="currentUserId">{auth.currentUser.user_id}</span>
+                                    Logged in as: <span id="currentUserId">{auth.currentUser.user_id}</span>
                                 </li>
                                 <li className="nav-item">
                                     <Link onClick={auth.logout} className="nav-link" to="/logout">Logout</Link>

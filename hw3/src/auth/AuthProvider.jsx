@@ -43,12 +43,17 @@ export default function AuthProvider({ children }) {
         }
     }
 
+    const request = async (url, data, method) => {
+        return await auth.request(url, data, method);
+    }
+
     return (
-        <AuthContext.Provider value={{ 
-            currentUser, 
-            login, 
-            register, 
+        <AuthContext.Provider value={{
+            currentUser,
+            login,
+            register,
             logout,
+            request,
         }}>
             {children}
         </AuthContext.Provider>

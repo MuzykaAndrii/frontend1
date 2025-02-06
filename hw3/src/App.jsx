@@ -4,6 +4,7 @@ import AuthProvider from "./auth/AuthProvider"
 import HeaderComponent from "./common/components/Header"
 import LoginComponent from "./auth/components/Login"
 import RegisterComponent from "./auth/components/Register"
+import ChatComponent from "./chats/components/Chat"
 
 
 export default function AppComponent() {
@@ -15,6 +16,7 @@ export default function AppComponent() {
                     <Routes>
                         <Route path="/login" element={<LoginComponent />} />
                         <Route path="/register" element={<RegisterComponent />} />
+                        <Route path="/chats" element={<ChatComponent />} />
                     </Routes>
                 </div>
             </AuthProvider>

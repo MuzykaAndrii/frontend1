@@ -14,11 +14,16 @@ class Auth {
             headers["Authorization"] = `Bearer ${this._authStorage.getAccessToken()}`;
         }
 
-        return await fetch(url, {
+        const options = {
             method,
-            headers,
-            body: JSON.stringify(data),
-        });
+            headers
+        };
+
+        if (method !== "GET") {
+            options.body = JSON.stringify(data);
+        }
+
+        return await fetch(url, options);
     }
 
     async request(url, data, method = "POST") {
@@ -32,8 +37,8 @@ class Auth {
                 throw new Error("Authentication failed. Please log in again.");
             }
         }
-
-        return response;
+        let res = await response.json();
+        return res;
     }
 
     async _refresh_access_token() {
