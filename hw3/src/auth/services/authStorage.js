@@ -40,6 +40,13 @@ class JwtStorage {
         let accessToken = this.getAccessToken();
         return accessToken ? this._decodeJwt(accessToken) : null;
     }
+
+    static getAuthHeader() {
+        return {
+            name: "Authorization",
+            data: this.getAccessToken(),
+        }
+    }
 }
 
 export default JwtStorage;

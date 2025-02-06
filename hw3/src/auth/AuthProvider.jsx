@@ -47,6 +47,10 @@ export default function AuthProvider({ children }) {
         return await auth.request(url, data, method);
     }
 
+    const getAuthHeader = () => {
+        return auth.getAuthHeader()
+    }
+
     return (
         <AuthContext.Provider value={{
             currentUser,
@@ -54,6 +58,7 @@ export default function AuthProvider({ children }) {
             register,
             logout,
             request,
+            getAuthHeader,
         }}>
             {children}
         </AuthContext.Provider>

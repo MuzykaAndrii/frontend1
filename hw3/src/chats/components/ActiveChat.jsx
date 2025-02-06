@@ -1,20 +1,56 @@
-import { useAuth } from '../../auth/context';
+import { useEffect, useState } from "react";
+
 import MessageComponent from './Message';
-
-export default function ActiveChatComponent() {
-    const client = useAuth();
+import { useAuth } from '../../auth/context';
 
 
+export default function ActiveChatComponent({ chatId }) {
+    const auth = useAuth();
+    const [messages, setMessages] = useState([]);
+    const authHeader = auth.getAuthHeader();
+
+    useEffect(() => {
+        if (!chatId) return;
+
+        const socketUrl = new URL(`ws://127.0.0.1:5000/ws/chatrooms/${chatId}/`);
+        socketUrl.searchParams.append('token', authHeader.data);
+
+        const socket = new WebSocket(socketUrl.toString());
+
+        socket.onmessage = (event) => {
+            const newMessage = JSON.parse(event.data);
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        };
+
+        socket.onopen = () => {
+            console.log("WebSocket connection established");
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, [chatId, auth]);
 
     return <>
 
         <div className="chatHistory flex-grow-1 overflow-auto p-3">
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            {/* <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} /> */}
+            {messages.map((msg, index) => (
+                <MessageComponent
+                    key={index}
+                    message={msg.message}
+                    sent_at={msg.sent_at}
+                    from_user_username={msg.from_user_username}
+                    from_user_id={msg.from_user_id}
+                />
+            ))}
         </div>
 
         <div className="row g-3 sendMsgArea p-3">

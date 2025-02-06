@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from '../../auth/context';
 import endpoints from '../services/endpoints';
 
-export default function ChatsListComponent() {
+export default function ChatsListComponent({ currentChatId }) {
     const client = useAuth();
     const [chats, setChats] = useState([]);
 
@@ -22,7 +22,11 @@ export default function ChatsListComponent() {
 
     return <>
         {chats.map((chat) => (
-            <Link to={`/chats/${chat.id}`} key={chat.id} className="list-group-item list-group-item-action">
+            <Link
+                to={`/chats/${chat.id}`}
+                key={chat.id}
+                className={`list-group-item list-group-item-action ${currentChatId == chat.id ? "active" : ""}`}
+            >
                 <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{chat.name}</h5>
                     <small className="text-body-secondary">13 minutes ago</small>
