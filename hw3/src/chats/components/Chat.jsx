@@ -1,5 +1,6 @@
 import { useAuth } from '../../auth/context';
 import ChatsListComponent from './ChatsList';
+import ActiveChatComponent from './ActiveChat';
 
 export default function ChatComponent() {
     const client = useAuth();
@@ -17,12 +18,7 @@ export default function ChatComponent() {
                 </div>
 
                 <div className="row g-3 sendMsgArea p-3">
-                    <div className="col-11">
-                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-                    </div>
-                    <div className="col-1">
-                        <button type="submit" className="btn btn-primary mb-3">Send</button>
-                    </div>
+                    <ActiveChatComponent />
                 </div>
             </div>
         </div>
