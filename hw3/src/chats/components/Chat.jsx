@@ -14,12 +14,7 @@ export default function ChatComponent() {
             </div>
 
             <div className="col-md-7 currentChat d-flex flex-column">
-                <div className="chatHistory flex-grow-1 overflow-auto p-3">
-                </div>
-
-                <div className="row g-3 sendMsgArea p-3">
-                    <ActiveChatComponent />
-                </div>
+                <ActiveChatComponent />
             </div>
         </div>
     </>
