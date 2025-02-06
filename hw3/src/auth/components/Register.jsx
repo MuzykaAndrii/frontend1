@@ -1,9 +1,11 @@
 import { useRef } from 'react'
 
 import {Validator, ValidationError} from '../validator'
+import { useAuth } from '../context';
 
 
-export default function RegisterFormComponent({ onRegister }) {
+export default function RegisterFormComponent() {
+    const auth = useAuth();
     let username = useRef(null);
     let email = useRef(null);
     let password1 = useRef(null);
@@ -24,12 +26,13 @@ export default function RegisterFormComponent({ onRegister }) {
             }
         }
 
-        await onRegister(username.current.value, email.current.value, password1.current.value);
+        await auth.register(username.current.value, email.current.value, password1.current.value);
     }
 
     return <>
     <div className="container">
-        <form onSubmit={handleRegister} className="w-25 mx-auto mt-5" id="register-form">
+        <form onSubmit={handleRegister} className="w-25 mx-auto mt-5 card p-4" id="register-form">
+            <h3>Register</h3>
             <div className="mb-3">
                 <label htmlFor="register-username" className="form-label">Username</label>
                 <input ref={username} type="text" className="form-control" id="register-username" required/>

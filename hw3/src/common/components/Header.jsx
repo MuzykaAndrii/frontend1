@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 
-export default function HeaderComponent({currentUser, onLogout}) {
+import { useAuth } from '../../auth/context';
+
+
+export default function HeaderComponent() {
+    const auth = useAuth();
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
@@ -23,13 +28,13 @@ export default function HeaderComponent({currentUser, onLogout}) {
                         </li>
                     </ul>
                     <ul className="navbar-nav">
-                        {currentUser ? (
+                        {auth.currentUser ? (
                             <>
                                 <li className="nav-link" id="currentUser">
-                                    Logged in as user with id: <span id="currentUserId">{currentUser.user_id}</span>
+                                    Logged in as user with id: <span id="currentUserId">{auth.currentUser.user_id}</span>
                                 </li>
                                 <li className="nav-item">
-                                    <a onClick={onLogout} className="nav-link" id="logout-link">Logout</a>
+                                    <a onClick={auth.logout} className="nav-link" id="logout-link">Logout</a>
                                 </li>
                             </>
                         ) : (
