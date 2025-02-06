@@ -10,11 +10,11 @@ export default function ActiveChatComponent() {
 
         <div className="chatHistory flex-grow-1 overflow-auto p-3">
             <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
+            {/* <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
             <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
             <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
             <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
-            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} />
+            <MessageComponent message={'some msg'} sent_at={"20:51"} from_user_username={"user"} from_user_id={1} /> */}
         </div>
 
         <div className="row g-3 sendMsgArea p-3">

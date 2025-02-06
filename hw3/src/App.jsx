@@ -11,12 +11,13 @@ export default function AppComponent() {
     return (
         <Router>
             <AuthProvider>
-                <HeaderComponent/>
+                <HeaderComponent />
                 <div className='container'>
                     <Routes>
                         <Route path="/login" element={<LoginComponent />} />
                         <Route path="/register" element={<RegisterComponent />} />
                         <Route path="/chats" element={<ChatComponent />} />
+                        <Route path="/chats/:chat_id" element={<ChatComponent />} />
                     </Routes>
                 </div>
             </AuthProvider>
