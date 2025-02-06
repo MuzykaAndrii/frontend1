@@ -37,15 +37,12 @@ class Auth {
     };
 
 
-    // async logout_user() {
-    //     return await this._request(
-    //         this._endpoints.logoutEndpoint,
-    //         {
-    //             access: access_token,
-    //             refresh: refresh_token,
-    //         }
-    //     );
-    // }
+    async logout_user() {
+        return await this._request(
+            this._endpoints.logoutEndpoint,
+            this._authStorage.processLogout()
+        );
+    }
 
 
     async register_user(username, email, password) {

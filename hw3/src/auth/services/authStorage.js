@@ -1,7 +1,7 @@
 class JwtStorage {
     static saveUser(creds) {
         sessionStorage.setItem("access_token", creds.access);
-        sessionStorage.setItem("access_refresh", creds.refresh);
+        sessionStorage.setItem("refresh_token", creds.refresh);
     }
 
     static getAccessToken() {
@@ -12,8 +12,20 @@ class JwtStorage {
         return sessionStorage.getItem("refresh_token");
     }
 
-    static deleteTokens() {
-        sessionStorage.clear();
+    static processLogout() {
+        let access = this.getAccessToken()
+        let refresh = this.getRefreshToken()
+        this.deleteCurrentUser()
+
+        return {
+            access: access,
+            refresh: refresh
+        }
+    }
+
+    static deleteCurrentUser() {
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
     }
 
     static _decodeJwt(token) {

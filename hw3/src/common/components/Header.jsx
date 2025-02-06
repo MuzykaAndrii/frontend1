@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function HeaderComponent({currentUser}) {
+export default function HeaderComponent({currentUser, onLogout}) {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
@@ -29,7 +29,7 @@ export default function HeaderComponent({currentUser}) {
                                     Logged in as user with id: <span id="currentUserId">{currentUser.user_id}</span>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" id="logout-link" href="#">Logout</a>
+                                    <a onClick={onLogout} className="nav-link" id="logout-link">Logout</a>
                                 </li>
                             </>
                         ) : (

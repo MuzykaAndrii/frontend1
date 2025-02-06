@@ -11,14 +11,22 @@ import endpoints from "./auth/services/endpoints"
 
 
 export default function AppComponent() {
-    const navigate = useNavigate();
-    let [currentUser, setCurrentUser] = useState(Auth.getCurrentUser());
     const auth = new Auth(AuthStorage, endpoints);
+    let [currentUser, setCurrentUser] = useState(auth.getCurrentUser());
 
     const handleLogin = async (username, password) => {
         try {
             await auth.login_user(username, password);
-            setCurrentUser(Auth.getCurrentUser());
+            setCurrentUser(auth.getCurrentUser());
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    const handleLogout = () => {
+        try {
+            auth.logout_user();
+            setCurrentUser(null);
         } catch (error) {
             alert(error);
         }
@@ -27,7 +35,6 @@ export default function AppComponent() {
     const handleRegister = async (username, email, password) => {
         try {
             await auth.register_user(username, email, password);
-            navigate('/login');
             alert("Registered successfully, now you can log in.");
         } catch (error) {
             alert(error);
@@ -36,7 +43,7 @@ export default function AppComponent() {
 
     return (
         <Router>
-            <HeaderComponent currentUser={currentUser} />
+            <HeaderComponent currentUser={currentUser} onLogout={handleLogout}/>
             <div className='container'>
                 <Routes>
                     <Route path="/login" element={<LoginComponent onLogin={handleLogin} />} />
