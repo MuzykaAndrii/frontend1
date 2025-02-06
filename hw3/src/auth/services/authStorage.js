@@ -8,6 +8,10 @@ class JwtStorage {
         return sessionStorage.getItem("access_token");
     }
 
+    static setAccessToken(token) {
+        sessionStorage.setItem("access_token", token);
+    }
+
     static getRefreshToken() {
         return sessionStorage.getItem("refresh_token");
     }

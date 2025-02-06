@@ -4,61 +4,77 @@ class Auth {
         this._endpoints = endpoints;
     }
 
-    async _request(url, data) {
-        return await fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
+    async _request(url, data, method = "POST", includeAuth = false) {
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+
+        if (includeAuth) {
+            headers["Authorization"] = `Bearer ${this._authStorage.getAccessToken()}`;
+        }
+
+        return await fetch(url, {
+            method,
+            headers,
+            body: JSON.stringify(data),
+        });
+    }
+
+    async request(url, data, method = "POST") {
+        let response = await this._request(url, data, method, true);
+
+        if (response.status === 401) {
+            try {
+                await this._refresh_access_token();
+                response = await this._request(url, data, method, true);
+            } catch (error) {
+                throw new Error("Authentication failed. Please log in again.");
             }
-        )
-    };
+        }
+
+        return response;
+    }
+
+    async _refresh_access_token() {
+        let response = await this._request(
+            this._endpoints.refreshEndpoint,
+            { refresh: this._authStorage.getRefreshToken() },
+            "POST"
+        );
+
+        if (response.status !== 200) {
+            throw new Error("Not authenticated.");
+        }
+
+        let data = await response.json();
+        this._authStorage.setAccessToken(data.access);
+    }
 
     getCurrentUser() {
         return this._authStorage.getCurrentUser();
     }
 
     async login_user(username, password) {
-        let response = await this._request(this._endpoints.loginEndpoint, {
-            username: username,
-            password: password,
-        });
-
-        if (response.status != 200) {
-            throw "Bad credentials";
+        let response = await this._request(this._endpoints.loginEndpoint, { username, password });
+        if (response.status !== 200) {
+            throw new Error("Bad credentials");
         }
 
-        let resp = await response.json();
-        this._authStorage.saveUser(resp);
-    };
-
-
-    async logout_user() {
-        return await this._request(
-            this._endpoints.logoutEndpoint,
-            this._authStorage.processLogout()
-        );
+        let data = await response.json();
+        this._authStorage.saveUser(data);
     }
 
+    async logout_user() {
+        await this._request(this._endpoints.logoutEndpoint, this._authStorage.processLogout());
+    }
 
     async register_user(username, email, password) {
-        let response = await this._request(
-            this._endpoints.registerEndpoint,
-            {
-                username: username,
-                email: email,
-                password: password,
-            }
-        );
-
+        let response = await this._request(this._endpoints.registerEndpoint, { username, email, password });
         let data = await response.json();
 
-        if (response.status != 200) {
-            throw JSON.stringify(data);
+        if (response.status !== 200) {
+            throw new Error(JSON.stringify(data));
         }
         return data;
     }

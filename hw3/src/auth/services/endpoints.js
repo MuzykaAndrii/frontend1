@@ -16,6 +16,10 @@ const Endpoints = {
 
     get registerEndpoint() {
         return `${this.backendUrl}/api/auth/signup/`;
+    },
+
+    get refreshEndpoint() {
+        return `${this.backendUrl}/api/auth/refresh/`;
     }
 };
 
