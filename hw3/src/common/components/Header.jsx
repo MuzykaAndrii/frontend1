@@ -34,8 +34,9 @@ export default function HeaderComponent() {
                                     Logged in as user with id: <span id="currentUserId">{auth.currentUser.user_id}</span>
                                 </li>
                                 <li className="nav-item">
-                                    <a onClick={auth.logout} className="nav-link" id="logout-link">Logout</a>
+                                    <Link onClick={auth.logout} className="nav-link" to="/logout">Logout</Link>
                                 </li>
+                                
                             </>
                         ) : (
                             <>
