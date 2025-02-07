@@ -1,41 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import MessageComponent from './Message';
+import MessageInputComponent from './MessageInput';
 import { useAuth } from '../../auth/context';
+import { wsEndpoints } from "../services/endpoints";
 
 
 export default function ActiveChatComponent({ chatId }) {
     const auth = useAuth();
     const [messages, setMessages] = useState([]);
-    const authHeader = auth.getAuthHeader();
+    const authData = auth.getAuthData();
+    const ws = useRef(null);
 
     useEffect(() => {
         if (!chatId) return;
 
-        const socketUrl = new URL(`ws://127.0.0.1:5000/ws/chatrooms/${chatId}/`);
-        socketUrl.searchParams.append('token', authHeader.data);
+        const socketUrl = new URL(wsEndpoints.getChatUrl(chatId));
+        socketUrl.searchParams.append('token', authData.token);
 
-        const socket = new WebSocket(socketUrl.toString());
+        ws.current = new WebSocket(socketUrl.toString());
 
-        socket.onmessage = (event) => {
+        ws.current.onmessage = (event) => {
             const newMessage = JSON.parse(event.data);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
         };
 
-        socket.onopen = () => {
+        ws.current.onopen = () => {
             console.log("WebSocket connection established");
         };
 
-        socket.onerror = (error) => {
+        ws.current.onerror = (error) => {
             console.error("WebSocket error:", error);
         };
 
-        socket.onclose = () => {
+        ws.current.onclose = () => {
             console.log("WebSocket connection closed");
         };
 
         return () => {
-            socket.close();
+            if (ws.current) ws.current.close();
         };
     }, [chatId, auth]);
 
@@ -54,12 +57,7 @@ export default function ActiveChatComponent({ chatId }) {
         </div>
 
         <div className="row g-3 sendMsgArea p-3">
-            <div className="col-11">
-                <textarea className="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-            <div className="col-1">
-                <button type="submit" className="btn btn-primary mb-3">Send</button>
-            </div>
+            <MessageInputComponent ws={ws} />
         </div>
 
     </>

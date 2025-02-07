@@ -11,8 +11,8 @@ class Auth {
         };
 
         if (includeAuth) {
-            const authHeader = this._authStorage.getAuthHeader()
-            headers[authHeader.name] = `Bearer ${authHeader.data}`;
+            const authHeader = this._authStorage.getAuthData().getHeader()
+            Object.assign(headers, authHeader);
         }
 
         const options = {
@@ -27,8 +27,8 @@ class Auth {
         return await fetch(url, options);
     }
 
-    getAuthHeader() {
-        return this._authStorage.getAuthHeader()
+    getAuthData() {
+        return this._authStorage.getAuthData();
     }
 
     async request(url, data, method = "POST") {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import { useAuth } from '../../auth/context';
-import endpoints from '../services/endpoints';
+import { apiEndpoints } from '../services/endpoints';
 
 export default function ChatsListComponent({ currentChatId }) {
     const client = useAuth();
@@ -11,7 +11,7 @@ export default function ChatsListComponent({ currentChatId }) {
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                let chats = await client.request(endpoints.chatsListUrl, {}, "GET");
+                let chats = await client.request(apiEndpoints.chatsListUrl, {}, "GET");
                 setChats(chats);
             } catch (err) {
                 alert(err);

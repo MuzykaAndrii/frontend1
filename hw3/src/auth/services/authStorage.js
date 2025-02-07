@@ -17,9 +17,9 @@ class JwtStorage {
     }
 
     static processLogout() {
-        let access = this.getAccessToken()
-        let refresh = this.getRefreshToken()
-        this.deleteCurrentUser()
+        let access = this.getAccessToken();
+        let refresh = this.getRefreshToken();
+        this.deleteCurrentUser();
 
         return {
             access: access,
@@ -41,10 +41,17 @@ class JwtStorage {
         return accessToken ? this._decodeJwt(accessToken) : null;
     }
 
-    static getAuthHeader() {
+    static getAuthData() {
         return {
             name: "Authorization",
-            data: this.getAccessToken(),
+            headerPrefix: "Bearer",
+            token: this.getAccessToken(),
+
+            getHeader() {
+                return {
+                    [this.name]: `${this.headerPrefix} ${this.token}`
+                }
+            }
         }
     }
 }

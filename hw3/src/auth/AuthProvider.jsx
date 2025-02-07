@@ -47,8 +47,8 @@ export default function AuthProvider({ children }) {
         return await auth.request(url, data, method);
     }
 
-    const getAuthHeader = () => {
-        return auth.getAuthHeader()
+    const getAuthData = () => {
+        return auth.getAuthData();
     }
 
     return (
@@ -58,7 +58,7 @@ export default function AuthProvider({ children }) {
             register,
             logout,
             request,
-            getAuthHeader,
+            getAuthData,
         }}>
             {children}
         </AuthContext.Provider>
