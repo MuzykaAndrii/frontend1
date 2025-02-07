@@ -5,3 +5,13 @@ export function addChats(chats) {
         payload: chats
     }
 }
+
+export function addMessage(message, chatId) {
+    return {
+        type: "chats/addMessage",
+        payload: {
+            message: message,
+            chatId: chatId
+        }
+    }
+}
