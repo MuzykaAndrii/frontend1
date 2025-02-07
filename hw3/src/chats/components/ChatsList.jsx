@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+
 import { useChatServices } from '../context';
+import { addChats } from '../slices';
 
 export default function ChatsListComponent({ currentChatId }) {
+    const dispatch = useDispatch();
+    const chatsObject = useSelector(state => state.chats);
+    const chats = Object.values(chatsObject); // Convert object to array
     const { api } = useChatServices();
-    const [chats, setChats] = useState([]);
 
     useEffect(() => {
         const fetchChats = async () => {
             try {
                 const chatsList = await api.listChats();
-                setChats(chatsList);
+                dispatch(addChats(chatsList));
             } catch (err) {
                 console.error(err);
             }
