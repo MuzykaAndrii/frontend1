@@ -1,22 +1,34 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const initialChats = {};
 
-export function addChatsReducer(state = initialChats, action) {
-    if (action.type === "chats/addChats") {
-        let newChatsState = {};
+export const chatsSlice = createSlice({
+    name: "chats",
+    initialState: initialChats,
 
-        action.payload.forEach(chat => {
-            newChatsState[chat.id] = {
-                id: chat.id,
-                name: chat.name,
-                messages: new Array()
+    reducers: {
+        addChats: (state, action) => {
+            action.payload.forEach(chat => {
+                state[chat.id] = {
+                    id: chat.id,
+                    name: chat.name,
+                    messages: new Array()
+                }
+            });
+        },
+
+        addMessage: (state, action) => {
+            const chatId = action.payload.chatId;
+            const message = action.payload.data;
+
+            if (state[chatId]) {
+                state[chatId].messages.push(message);
+            } else {
+                console.error(`Chat with id ${chatId} does not exist!`);
             }
-        });
-
-        return {
-            ...state,
-            ...newChatsState
         }
     }
+});
 
-    return state
-}
+export const { addChats, addMessage } = chatsSlice.actions;
+export default chatsSlice.reducer;
