@@ -19,7 +19,7 @@ export const chatsSlice = createSlice({
 
         addMessage: (state, action) => {
             const chatId = action.payload.chatId;
-            const message = action.payload.data;
+            const message = action.payload.message;
 
             if (state[chatId]) {
                 state[chatId].messages.push(message);

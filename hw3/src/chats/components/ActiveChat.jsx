@@ -1,14 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 
 import MessageComponent from './Message';
 import MessageInputComponent from './MessageInput';
 import { useAuth } from '../../auth/context';
 import { wsEndpoints } from "../services/endpoints";
+import { addMessage } from '../slices';
 
 
 export default function ActiveChatComponent({ chatId }) {
+    const dispatch = useDispatch();
     const auth = useAuth();
-    const [messages, setMessages] = useState([]);
+    const chats = useSelector(state => state.chats);
+    const messages = chats[chatId].messages;
     const authData = auth.getAuthData();
     const ws = useRef(null);
 
@@ -22,7 +26,7 @@ export default function ActiveChatComponent({ chatId }) {
 
         ws.current.onmessage = (event) => {
             const newMessage = JSON.parse(event.data);
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+            dispatch(addMessage({ message: newMessage, chatId: chatId }));
         };
 
         ws.current.onopen = () => {
