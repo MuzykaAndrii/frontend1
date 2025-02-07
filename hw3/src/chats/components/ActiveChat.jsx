@@ -60,7 +60,7 @@ export default function ActiveChatComponent({ chatId }) {
     }
 
     return <>
-        <div className="chatHistory flex-grow-1 overflow-auto p-3">
+        <div className="chat-messages p-4 flex-grow-1 overflow-auto p-3">
             {messages.map((msg, index) => (
                 <MessageComponent
                     key={index}
@@ -68,6 +68,7 @@ export default function ActiveChatComponent({ chatId }) {
                     sent_at={msg.sent_at}
                     from_user_username={msg.from_user_username}
                     from_user_id={msg.from_user_id}
+                    current_user={auth.currentUser}
                 />
             ))}
         </div>

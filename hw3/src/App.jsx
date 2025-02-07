@@ -8,30 +8,9 @@ import RegisterComponent from "./auth/components/Register"
 import ChatComponent from "./chats/components/Chat"
 import { ChatServiceProvider } from "./chats/services/chatServiceProvider"
 import store from './store'
-import { addChats, addMessage } from "./chats/slices"
-import { selectChatsData } from "./chats/selectors";
 
 
 export default function AppComponent() {
-    // let chats = [
-    //     { id: 1, name: "chat1" },
-    //     { id: 2, name: "chat2" }
-    // ]
-    // store.dispatch(addChats(chats));
-    // store.dispatch(addMessage({
-    //     chatId: 1,
-    //     data: {
-    //         message: "Message data",
-    //         sent_at: "timestamp",
-    //         from_user_id: "user_id",
-    //         from_user_username: "username"
-
-    //     }
-    // }));
-    // console.log(selectChatsData(store.getState()));
-
-
-
     return (
         <Provider store={store}>
             <Router>

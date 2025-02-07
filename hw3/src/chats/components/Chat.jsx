@@ -8,13 +8,13 @@ export default function ChatComponent() {
 
     return <>
         <div className="row my-5" style={{ height: "80vh" }}>
-            <div className="col-md-5 chatList">
-                <div className="list-group">
+            <div className="col-md-5 chatList border rounded">
+                <div className="list-group mt-3">
                     <ChatsListComponent currentChatId={chat_id} />
                 </div>
             </div>
 
-            <div className="col-md-7 currentChat d-flex flex-column">
+            <div className="col-md-7 currentChat d-flex flex-column border rounded">
                 {chat_id
                     ? (<ActiveChatComponent chatId={chat_id} />)
                     : (<h3 className="text-center">No active chat selected.</h3>)
