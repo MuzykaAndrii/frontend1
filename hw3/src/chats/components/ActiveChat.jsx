@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 
 import MessageComponent from './Message';
@@ -12,12 +12,21 @@ export default function ActiveChatComponent({ chatId }) {
     const dispatch = useDispatch();
     const auth = useAuth();
     const chats = useSelector(state => state.chats);
-    const messages = chats[chatId].messages;
+    // i need this here because chats loads asynchronously, i.e. the parent component
+    // cant download current chat faster than current messages displays
+    const [isLoading, setIsLoading] = useState(true);
+    const messages = chats[chatId]?.messages || [];
     const authData = auth.getAuthData();
     const ws = useRef(null);
 
     useEffect(() => {
-        if (!chatId) return;
+        if (chats[chatId]) {
+            setIsLoading(false);
+        }
+    }, [chats, chatId]);
+
+    useEffect(() => {
+        if (!chatId || isLoading) return;
 
         const socketUrl = new URL(wsEndpoints.getChatUrl(chatId));
         socketUrl.searchParams.append('token', authData.token);
@@ -44,10 +53,13 @@ export default function ActiveChatComponent({ chatId }) {
         return () => {
             if (ws.current) ws.current.close();
         };
-    }, [chatId, auth]);
+    }, [chatId, auth, isLoading]);
+
+    if (isLoading) {
+        return <div>Loading chat...</div>;
+    }
 
     return <>
-
         <div className="chatHistory flex-grow-1 overflow-auto p-3">
             {messages.map((msg, index) => (
                 <MessageComponent
@@ -63,6 +75,5 @@ export default function ActiveChatComponent({ chatId }) {
         <div className="row g-3 sendMsgArea p-3">
             <MessageInputComponent ws={ws} />
         </div>
-
     </>
 }
