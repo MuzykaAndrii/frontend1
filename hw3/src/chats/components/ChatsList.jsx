@@ -1,24 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-
-import { useAuth } from '../../auth/context';
-import { apiEndpoints } from '../services/endpoints';
+import { useChatServices } from '../context';
 
 export default function ChatsListComponent({ currentChatId }) {
-    const client = useAuth();
+    const { api } = useChatServices();
     const [chats, setChats] = useState([]);
 
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                let chats = await client.request(apiEndpoints.chatsListUrl, {}, "GET");
-                setChats(chats);
+                const chatsList = await api.listChats();
+                setChats(chatsList);
             } catch (err) {
-                alert(err);
+                console.error(err);
             }
         };
         fetchChats();
-    }, [client]);
+    }, [api]);
 
     return <>
         {chats.map((chat) => (
