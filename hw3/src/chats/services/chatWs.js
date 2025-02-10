@@ -2,15 +2,14 @@ export default class WebSocketService {
     constructor(auth) {
         this.auth = auth;
         this.connections = new Map();
-        this.messageHandlers = new Set();
+        this.messageHandler = null;
     }
 
-    addMessageHandler(handler) {
-        this.messageHandlers.add(handler);
-        return () => this.messageHandlers.delete(handler);
+    setMessageHandler(handler) {
+        this.messageHandler = handler;
     }
 
-    connect(chatId, socketUrl) {
+    connect(chatId, socketUrl, onMessageCallback) {
         if (this.connections.has(chatId)) {
             return;
         }
@@ -20,7 +19,9 @@ export default class WebSocketService {
 
         ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            this.messageHandlers.forEach(handler => handler(message, chatId));
+            if (this.messageHandler) {
+                this.messageHandler(message, chatId);
+            }
         };
 
         ws.onopen = () => {

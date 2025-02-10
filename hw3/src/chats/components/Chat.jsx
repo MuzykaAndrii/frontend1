@@ -17,22 +17,15 @@ export default function ChatComponent() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const handleMessage = (message, chatId) => {
+        ws.setMessageHandler((message, chatId) => {
             dispatch(addMessage({ message, chatId }));
-        };
-
-        const removeHandler = ws.addMessageHandler(handleMessage);
+        });
 
         Object.keys(chats).forEach(chatId => {
             const socketUrl = new URL(wsEndpoints.getChatUrl(chatId));
             ws.connect(chatId, socketUrl);
         });
-
-        return () => {
-            removeHandler();
-            ws.disconnectAll();
-        };
-    }, [chats, ws]);
+    }, [chats, ws, dispatch]);
 
     return <>
         <div className="row my-5" style={{ height: "80vh" }}>
