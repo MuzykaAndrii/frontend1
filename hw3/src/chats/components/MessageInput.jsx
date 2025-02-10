@@ -1,11 +1,17 @@
 import { useState } from "react";
 
-export default function MessageInputComponent({ ws }) {
+import { useChatServices } from '../context';
+
+
+export default function MessageInputComponent({ chatId }) {
     const [message, setMessage] = useState("");
+    const { ws } = useChatServices();
+
 
     const sendMessage = () => {
-        if (ws.current && message.trim() !== "") {
-            ws.current.send(JSON.stringify({ message: message }));
+        const conn = ws.connections.get(chatId.toString());
+        if (conn && message.trim() !== "") {
+            conn.send(JSON.stringify({ message: message }));
             setMessage("");
         }
     };

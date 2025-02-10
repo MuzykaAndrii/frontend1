@@ -38,8 +38,8 @@ export const chatsSlice = createSlice({
             const chatId = action.payload.chatId;
             const message = action.payload.message;
 
-            if (state[chatId]) {
-                state[chatId].messages.push(message);
+            if (state.chats[chatId]) {
+                state.chats[chatId].messages.push(message);
             } else {
                 console.error(`Chat with id ${chatId} does not exist!`);
             }

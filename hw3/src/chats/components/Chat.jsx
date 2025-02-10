@@ -1,22 +1,50 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
 
+import { wsEndpoints } from '../services/endpoints';
 import ChatsListComponent from './ChatsList';
 import ActiveChatComponent from './ActiveChat';
+import { useChatServices } from '../context';
+import { addMessage } from "../slices";
+
 
 export default function ChatComponent() {
-    const { chat_id } = useParams();
+    const urlParams = useParams();
+    const chatId = Number(urlParams.chat_id);
+    const { ws } = useChatServices();
+    const chats = useSelector(state => state.chats.chats);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const handleMessage = (message, chatId) => {
+            dispatch(addMessage({ message, chatId }));
+        };
+
+        const removeHandler = ws.addMessageHandler(handleMessage);
+
+        Object.keys(chats).forEach(chatId => {
+            const socketUrl = new URL(wsEndpoints.getChatUrl(chatId));
+            ws.connect(chatId, socketUrl);
+        });
+
+        return () => {
+            removeHandler();
+            ws.disconnectAll();
+        };
+    }, [chats, ws]);
 
     return <>
         <div className="row my-5" style={{ height: "80vh" }}>
             <div className="col-md-5 chatList border rounded">
                 <div className="list-group mt-3">
-                    <ChatsListComponent currentChatId={chat_id} />
+                    <ChatsListComponent currentChatId={chatId} />
                 </div>
             </div>
 
             <div className="col-md-7 currentChat d-flex flex-column border rounded">
-                {chat_id
-                    ? (<ActiveChatComponent chatId={chat_id} />)
+                {chatId
+                    ? (<ActiveChatComponent chatId={chatId} />)
                     : (<h3 className="text-center">No active chat selected.</h3>)
                 }
             </div>
