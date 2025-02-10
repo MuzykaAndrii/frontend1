@@ -38,7 +38,7 @@ export default function ChatComponent() {
             <div className="col-md-7 currentChat d-flex flex-column border rounded">
                 {chatId
                     ? (<ActiveChatComponent chatId={chatId} />)
-                    : (<h3 className="text-center">No active chat selected.</h3>)
+                    : (<h3 className="text-center mt-4">No active chat selected.</h3>)
                 }
             </div>
         </div>

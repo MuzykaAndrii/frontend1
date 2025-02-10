@@ -26,7 +26,7 @@ export default function ActiveChatComponent({ chatId }) {
     }
 
     return <>
-        <div className="chat-messages p-4 flex-grow-1 overflow-auto p-3">
+        <div className="chat-messages flex-grow-1 overflow-auto py-4">
             {messages.map((msg, index) => (
                 <MessageComponent
                     key={index}
