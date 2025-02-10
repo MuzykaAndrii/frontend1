@@ -3,28 +3,23 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useChatServices } from '../context';
-import { addChats } from '../slices';
+import { fetchChats } from '../slices';
+
 
 export default function ChatsListComponent({ currentChatId }) {
-    const dispatch = useDispatch();
-    const chatsObject = useSelector(state => state.chats);
-    const chats = Object.values(chatsObject); // Convert object to array
     const { api } = useChatServices();
+    const dispatch = useDispatch();
+    const { chats, loading, error } = useSelector(state => state.chats);
 
     useEffect(() => {
-        const fetchChats = async () => {
-            try {
-                const chatsList = await api.listMyChats();
-                dispatch(addChats(chatsList));
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchChats();
-    }, [api]);
+        dispatch(fetchChats(api));
+    }, [dispatch]);
+
+    if (loading) return <p>Loading chats...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return <>
-        {chats.map((chat) => (
+        {Object.values(chats).map((chat) => (
             <Link
                 to={`/chats/${chat.id}`}
                 key={chat.id}

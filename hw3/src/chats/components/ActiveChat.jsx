@@ -11,7 +11,7 @@ import { addMessage } from '../slices';
 export default function ActiveChatComponent({ chatId }) {
     const dispatch = useDispatch();
     const auth = useAuth();
-    const chats = useSelector(state => state.chats);
+    const chats = useSelector(state => state.chats.chats);
     // i need this here because chats loads asynchronously, i.e. the parent component
     // cant download current chat faster than current messages displays
     const [isLoading, setIsLoading] = useState(true);

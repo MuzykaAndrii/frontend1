@@ -1,10 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
+
+export const fetchChats = createAsyncThunk(
+    'chats/fetchChats',
+    async (api, { rejectWithValue }) => {
+        try {
+            return await api.listMyChats();
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 
 const initialChats = {};
 
 export const chatsSlice = createSlice({
     name: "chats",
-    initialState: initialChats,
+    initialState: {
+        chats: initialChats,
+        loading: false,
+        error: null
+    },
 
     reducers: {
         addChats: (state, action) => {
@@ -27,6 +44,25 @@ export const chatsSlice = createSlice({
                 console.error(`Chat with id ${chatId} does not exist!`);
             }
         }
+    },
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchChats.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchChats.fulfilled, (state, action) => {
+                state.loading = false;
+                state.chats = action.payload.reduce((acc, chat) => {
+                    acc[chat.id] = { id: chat.id, name: chat.name, messages: [] };
+                    return acc;
+                }, {});
+            })
+            .addCase(fetchChats.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
     }
 });
 
