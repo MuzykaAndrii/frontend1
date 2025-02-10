@@ -14,7 +14,7 @@ export default function ChatsListComponent({ currentChatId }) {
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                const chatsList = await api.listChats();
+                const chatsList = await api.listMyChats();
                 dispatch(addChats(chatsList));
             } catch (err) {
                 console.error(err);

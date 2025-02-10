@@ -8,6 +8,10 @@ export const apiEndpoints = {
 
     get chatsListUrl() {
         return `${this.backendUrl}/api/chatrooms/`;
+    },
+
+    get myChatsListUrl() {
+        return `${this.backendUrl}/api/chatrooms/my/`;
     }
 };
 

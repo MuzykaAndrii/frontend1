@@ -11,4 +11,12 @@ export default class ChatApiService {
             throw new Error(`Failed to fetch chats: ${error.message}`);
         }
     }
+
+    async listMyChats() {
+        try {
+            return await this.authClient.request(this.endpoints.myChatsListUrl, {}, "GET");
+        } catch (error) {
+            throw new Error(`Failed to fetch chats: ${error.message}`);
+        }
+    }
 }
