@@ -1,47 +1,49 @@
+import { AuthCredentials, AuthData, User } from '../types';
+
 class JwtStorage {
-    static saveUser(creds) {
+    static saveUser(creds: AuthCredentials): void {
         sessionStorage.setItem("access_token", creds.access);
         sessionStorage.setItem("refresh_token", creds.refresh);
     }
 
-    static getAccessToken() {
+    static getAccessToken(): string | null {
         return sessionStorage.getItem("access_token");
     }
 
-    static setAccessToken(token) {
+    static setAccessToken(token: string): void {
         sessionStorage.setItem("access_token", token);
     }
 
-    static getRefreshToken() {
+    static getRefreshToken(): string | null {
         return sessionStorage.getItem("refresh_token");
     }
 
-    static processLogout() {
-        let access = this.getAccessToken();
-        let refresh = this.getRefreshToken();
+    static processLogout(): AuthCredentials {
+        const access = this.getAccessToken();
+        const refresh = this.getRefreshToken();
         this.deleteCurrentUser();
 
         return {
-            access: access,
-            refresh: refresh
-        }
+            access: access || '',
+            refresh: refresh || ''
+        };
     }
 
-    static deleteCurrentUser() {
+    static deleteCurrentUser(): void {
         sessionStorage.removeItem("access_token");
         sessionStorage.removeItem("refresh_token");
     }
 
-    static _decodeJwt(token) {
+    private static _decodeJwt(token: string): User {
         return JSON.parse(atob(token.split('.')[1]));
     }
 
-    static getCurrentUser() {
-        let accessToken = this.getAccessToken();
+    static getCurrentUser(): User | null {
+        const accessToken = this.getAccessToken();
         return accessToken ? this._decodeJwt(accessToken) : null;
     }
 
-    static getAuthData() {
+    static getAuthData(): AuthData {
         return {
             name: "Authorization",
             headerPrefix: "Bearer",
@@ -50,9 +52,9 @@ class JwtStorage {
             getHeader() {
                 return {
                     [this.name]: `${this.headerPrefix} ${this.token}`
-                }
+                };
             }
-        }
+        };
     }
 }
 

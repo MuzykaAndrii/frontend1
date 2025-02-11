@@ -1,43 +1,45 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { Chat, ChatsState, Message } from './types';
+import ChatApiService from './services/chatApi';
 
 export const fetchChats = createAsyncThunk(
     'chats/fetchChats',
-    async (api, { rejectWithValue }) => {
+    async (api: ChatApiService, { rejectWithValue }) => {
         try {
             return await api.listMyChats();
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch chats');
         }
     }
 );
 
+const initialState: ChatsState = {
+    chats: {},
+    loading: false,
+    error: null
+};
 
-const initialChats = {};
+interface AddMessagePayload {
+    chatId: number;
+    message: Message;
+}
 
 export const chatsSlice = createSlice({
     name: "chats",
-    initialState: {
-        chats: initialChats,
-        loading: false,
-        error: null
-    },
-
+    initialState,
     reducers: {
-        addChats: (state, action) => {
+        addChats: (state, action: PayloadAction<Chat[]>) => {
             action.payload.forEach(chat => {
-                state[chat.id] = {
+                state.chats[chat.id] = {
                     id: chat.id,
                     name: chat.name,
-                    messages: new Array()
-                }
+                    messages: []
+                };
             });
         },
 
-        addMessage: (state, action) => {
-            const chatId = action.payload.chatId;
-            const message = action.payload.message;
-
+        addMessage: (state, action: PayloadAction<AddMessagePayload>) => {
+            const { chatId, message } = action.payload;
             if (state.chats[chatId]) {
                 state.chats[chatId].messages.push(message);
             } else {
@@ -54,14 +56,14 @@ export const chatsSlice = createSlice({
             })
             .addCase(fetchChats.fulfilled, (state, action) => {
                 state.loading = false;
-                state.chats = action.payload.reduce((acc, chat) => {
+                state.chats = action.payload.reduce((acc: Record<number, Chat>, chat) => {
                     acc[chat.id] = { id: chat.id, name: chat.name, messages: [] };
                     return acc;
                 }, {});
             })
             .addCase(fetchChats.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
             });
     }
 });

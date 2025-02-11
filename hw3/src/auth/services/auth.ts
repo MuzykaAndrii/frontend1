@@ -1,37 +1,48 @@
+import { AuthCredentials, AuthData, AuthEndpoints, User } from '../types';
+import JwtStorage from "./authStorage";
+
 class Auth {
-    constructor(authStorage, endpoints) {
+    private _authStorage: typeof JwtStorage;
+    private _endpoints: AuthEndpoints;
+
+    constructor(authStorage: typeof JwtStorage, endpoints: AuthEndpoints) {
         this._authStorage = authStorage;
         this._endpoints = endpoints;
     }
 
-    async _request(url, data, method = "POST", includeAuth = false) {
-        const headers = {
+    private async _request(
+        url: string,
+        data?: any,
+        method: string = "POST",
+        includeAuth: boolean = false
+    ): Promise<Response> {
+        const headers: Record<string, string> = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         };
 
         if (includeAuth) {
-            const authHeader = this._authStorage.getAuthData().getHeader()
+            const authHeader = this._authStorage.getAuthData().getHeader();
             Object.assign(headers, authHeader);
         }
 
-        const options = {
+        const options: RequestInit = {
             method,
             headers
         };
 
-        if (method !== "GET") {
+        if (method !== "GET" && data) {
             options.body = JSON.stringify(data);
         }
 
         return await fetch(url, options);
     }
 
-    getAuthData() {
+    getAuthData(): AuthData {
         return this._authStorage.getAuthData();
     }
 
-    async request(url, data, method = "POST") {
+    async request<T>(url: string, data?: any, method: string = "POST"): Promise<T> {
         let response = await this._request(url, data, method, true);
 
         if (response.status === 401) {
@@ -42,12 +53,11 @@ class Auth {
                 throw new Error("Authentication failed. Please log in again.");
             }
         }
-        let res = await response.json();
-        return res;
+        return await response.json() as T;
     }
 
-    async _refresh_access_token() {
-        let response = await this._request(
+    private async _refresh_access_token(): Promise<void> {
+        const response = await this._request(
             this._endpoints.refreshEndpoint,
             { refresh: this._authStorage.getRefreshToken() },
             "POST"
@@ -57,31 +67,34 @@ class Auth {
             throw new Error("Not authenticated.");
         }
 
-        let data = await response.json();
+        const data = await response.json() as AuthCredentials;
         this._authStorage.setAccessToken(data.access);
     }
 
-    getCurrentUser() {
+    getCurrentUser(): User | null {
         return this._authStorage.getCurrentUser();
     }
 
-    async login_user(username, password) {
-        let response = await this._request(this._endpoints.loginEndpoint, { username, password });
+    async login_user(username: string, password: string): Promise<void> {
+        const response = await this._request(this._endpoints.loginEndpoint, { username, password });
         if (response.status !== 200) {
             throw new Error("Bad credentials");
         }
 
-        let data = await response.json();
+        const data = await response.json() as AuthCredentials;
         this._authStorage.saveUser(data);
     }
 
-    async logout_user() {
+    async logout_user(): Promise<void> {
         await this._request(this._endpoints.logoutEndpoint, this._authStorage.processLogout());
     }
 
-    async register_user(username, email, password) {
-        let response = await this._request(this._endpoints.registerEndpoint, { username, email, password });
-        let data = await response.json();
+    async register_user(username: string, email: string, password: string): Promise<any> {
+        const response = await this._request(
+            this._endpoints.registerEndpoint,
+            { username, email, password }
+        );
+        const data = await response.json();
 
         if (response.status !== 200) {
             throw new Error(JSON.stringify(data));

@@ -1,4 +1,6 @@
-export const apiEndpoints = {
+import { ChatEndpoints, WSEndpoints } from '../types';
+
+export const apiEndpoints: ChatEndpoints = {
     host: "127.0.0.1",
     port: "8000",
 
@@ -15,16 +17,15 @@ export const apiEndpoints = {
     }
 };
 
-
-export const wsEndpoints = {
+export const wsEndpoints: WSEndpoints = {
     host: "127.0.0.1",
     port: "5000",
 
     get backendUrl() {
-        return `ws://${this.host}:${this.port}`
+        return `ws://${this.host}:${this.port}`;
     },
 
-    getChatUrl(roomId) {
-        return `${this.backendUrl}/ws/chatrooms/${roomId}/`
+    getChatUrl(roomId: number) {
+        return `${this.backendUrl}/ws/chatrooms/${roomId}/`;
     }
 };
